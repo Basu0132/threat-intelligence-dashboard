@@ -1,20 +1,18 @@
- Threat Intelligence Dashboard
+** Threat Intelligence Dashboard**
+
 🔍 Overview
 This project is a full stack web application called the Threat Intelligence Dashboard.
 It allows a cybersecurity team to:
 
 📊 Browse, filter, search and analyze cybersecurity threat data.
-
 🧮 View summary statistics on threats.
-
 🤖 Submit new threat descriptions to classify them using a trained ML model.
-
 🔒 Secure access via JWT-based authentication.
 
 It was developed as a take-home assessment to demonstrate full stack, ML, and secure app engineering skills.
 
 💻 Technology Stack & Justification
-Layer	Technology	Why chosen
+Layer	Technology	Why chosen:
 Backend	Node.js + Express.js	Fast API development, async-friendly
 Database	PostgreSQL	Reliable, relational, rich features
 Frontend	React	Component-based SPA, very popular
@@ -43,19 +41,20 @@ Threats table with pagination, search, filter.
 
 Detail view on click.
 
+
+
 ✅ Part 2: Advanced Features
 
 🤖 Machine Learning classification:
 
 Logistic Regression + TF-IDF on cleaned threat descriptions.
-
 /api/threats/analyze endpoint to predict category.
 
+
 🔒 JWT authentication:
-
 /api/auth/login endpoint.
-
 Protects /api/threats/analyze.
+
 
 ⚙️ Setup Instructions
 1️⃣ Clone and install dependencies
@@ -66,11 +65,9 @@ cd threat-dashboard
 Backend
 
 
-
 cd backend
 npm install
 Frontend
-
 
 
 cd ../frontend
@@ -78,7 +75,6 @@ npm install
 2️⃣ Configure environment variables
 In backend/.env:
 
-ini
 
 DATABASE_URL=postgresql://<user>:<password>@localhost:5432/<dbname>
 JWT_SECRET=supersecretkey
@@ -86,12 +82,8 @@ PORT=5000
 3️⃣ Setup PostgreSQL
 Create the database:
 
-sql
-
 CREATE DATABASE threatdb;
 Run the schema:
-
-sql
 
 CREATE TABLE threats (
   id SERIAL PRIMARY KEY,
@@ -117,17 +109,21 @@ CREATE TABLE users (
   username VARCHAR(100) UNIQUE NOT NULL,
   password_hash VARCHAR(255) NOT NULL
 );
+
 4️⃣ Ingest data into database
 
 
 cd backend
 node ingest.js
+
+
 5️⃣ Train the ML model
 
 
 cd backend/ml
 python train_model.py
 This will create threat_model.pkl and tfidf_vectorizer.pkl in backend/ml.
+
 
 6️⃣ Start servers
 Start backend
@@ -146,24 +142,19 @@ The app runs on:
 
 🚀 http://localhost:5000 (backend API)
 
-7️⃣ (Optional) Docker
-If using Docker, you can start everything with:
-
-
-
 docker-compose up
 (You need to write a docker-compose.yml that wires up your frontend, backend, and a postgres container.)
 
-8️⃣ Default credentials
+
+Default credentials
 Manually add a user for testing:
 
-javascript
 
 const bcrypt = require('bcryptjs')
 console.log(bcrypt.hashSync('password123', 10))
-Then insert into DB:
 
-sql
+
+Then insert into DB:
 
 INSERT INTO users (username, password_hash) VALUES ('admin', '<hash>');
 Now login from Postman or frontend.
@@ -172,8 +163,6 @@ Now login from Postman or frontend.
 🚀 How to login & use secure routes
 1. Login:
 
-http
-
 POST /api/auth/login
 Content-Type: application/json
 
@@ -181,16 +170,12 @@ Content-Type: application/json
   "username": "admin",
   "password": "password123"
 }
-⬇️ Returns
 
-json
-
+Output:
 { "token": "..." }
 
 
 2. Classify a threat description:
-
-http
 
 POST /api/threats/analyze
 Authorization: Bearer <token>
@@ -199,3 +184,7 @@ Content-Type: application/json
 {
   "description": "Suspicious traffic observed downloading ransomware payload"
 }
+
+Output:
+
+Predicted Category: Malware
